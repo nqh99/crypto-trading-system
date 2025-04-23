@@ -1,6 +1,6 @@
 spring:
   application:
-    name: crypto-trading-system
+    name: cts
 
   datasource:
     url: ${DB_URL:jdbc:h2:mem:db}
@@ -15,3 +15,10 @@ spring:
     console:
       enabled: true
       path: /h2
+
+logging:
+  config: classpath:xml/logback-spring.xml
+  file:
+    path: log
+    name: ${spring.application.name}
+
