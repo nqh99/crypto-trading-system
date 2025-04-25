@@ -1,86 +1,86 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <configuration>
-    <property name="LOG_FILE" value="${LOG_FILE:-eco}"/>
-    <property name="LOG_PATH" value="${LOG_PATH:-${LOG_TEMP:-${java.io.tmpdir:-/tmp}}}"/>
-    <property name="DATE_TIME_PATTERN" value="%d{dd-MM-yyyy HH:mm:ss.SSS, UTC}"/>
-    <property name="CONSOLE_LOG_PATTERN"
-              value="%black(${DATE_TIME_PATTERN}) %red([%thread]) %highlight(%-5level) %cyan(%logger{36}.%M) -%kvp -%msg %n"/>
-    <timestamp key="BY_DATE" datePattern="yyyy-MM-dd"/>
+	<property name="LOG_FILE" value="${LOG_FILE:-eco}"/>
+	<property name="LOG_PATH" value="${LOG_PATH:-${LOG_TEMP:-${java.io.tmpdir:-/tmp}}}"/>
+	<property name="DATE_TIME_PATTERN" value="%d{dd-MM-yyyy HH:mm:ss.SSS, UTC}"/>
+	<property name="CONSOLE_LOG_PATTERN"
+						value="%black(${DATE_TIME_PATTERN}) %red([%thread]) %highlight(%-5level) %cyan(%logger{36}.%M) -%kvp -%msg %n"/>
+	<timestamp key="BY_DATE" datePattern="yyyy-MM-dd"/>
 
-    <appender name="FilteredConsole" class="ch.qos.logback.core.ConsoleAppender">
-        <filter class="ch.qos.logback.classic.filter.ThresholdFilter">
-            <level>DEBUG</level>
-        </filter>
-        <encoder>
-            <pattern>
-                ${CONSOLE_LOG_PATTERN}
-            </pattern>
-            <charset>UTF-8</charset>
-        </encoder>
-    </appender>
+	<appender name="FilteredConsole" class="ch.qos.logback.core.ConsoleAppender">
+		<filter class="ch.qos.logback.classic.filter.ThresholdFilter">
+			<level>DEBUG</level>
+		</filter>
+		<encoder>
+			<pattern>
+				${CONSOLE_LOG_PATTERN}
+			</pattern>
+			<charset>UTF-8</charset>
+		</encoder>
+	</appender>
 
-    <appender name="DateSiftingAppender" class="ch.qos.logback.classic.sift.SiftingAppender">
-        <discriminator>
-            <key>FOLDER_DATE</key>
-            <defaultValue>${BY_DATE}</defaultValue>
-        </discriminator>
-        <sift>
-            <appender name="RollingFile"
-                      class="ch.qos.logback.core.rolling.RollingFileAppender">
-                <file>${LOG_PATH}/${FOLDER_DATE}/${LOG_FILE}.log</file>
-                <encoder
-                        class="ch.qos.logback.classic.encoder.PatternLayoutEncoder">
-                    <Pattern>
-                        ${DATE_TIME_PATTERN} [%thread] %-5level %logger{36}.%M -%kvp -%msg %n
-                    </Pattern>
-                </encoder>
-                <rollingPolicy
-                        class="ch.qos.logback.core.rolling.SizeAndTimeBasedRollingPolicy">
-                    <fileNamePattern>
-                        ${LOG_PATH}/${FOLDER_DATE}/${LOG_FILE}.%d{yyMMdd}.%i.log
-                    </fileNamePattern>
-                    <maxFileSize>10MB</maxFileSize>
-                    <maxHistory>60</maxHistory>
-                    <totalSizeCap>20GB</totalSizeCap>
-                    <timeBasedFileNamingAndTriggeringPolicy
-                            class="ch.qos.logback.core.rolling.SizeAndTimeBasedFNATP">
-                        <maxFileSize>10MB</maxFileSize>
-                    </timeBasedFileNamingAndTriggeringPolicy>
-                </rollingPolicy>
-            </appender>
-        </sift>
-    </appender>
+	<appender name="DateSiftingAppender" class="ch.qos.logback.classic.sift.SiftingAppender">
+		<discriminator>
+			<key>FOLDER_DATE</key>
+			<defaultValue>${BY_DATE}</defaultValue>
+		</discriminator>
+		<sift>
+			<appender name="RollingFile"
+								class="ch.qos.logback.core.rolling.RollingFileAppender">
+				<file>${LOG_PATH}/${FOLDER_DATE}/${LOG_FILE}.log</file>
+				<encoder
+						class="ch.qos.logback.classic.encoder.PatternLayoutEncoder">
+					<Pattern>
+						${DATE_TIME_PATTERN} [%thread] %-5level %logger{36}.%M -%kvp -%msg %n
+					</Pattern>
+				</encoder>
+				<rollingPolicy
+						class="ch.qos.logback.core.rolling.SizeAndTimeBasedRollingPolicy">
+					<fileNamePattern>
+						${LOG_PATH}/${FOLDER_DATE}/${LOG_FILE}.%d{yyMMdd}.%i.log
+					</fileNamePattern>
+					<maxFileSize>10MB</maxFileSize>
+					<maxHistory>60</maxHistory>
+					<totalSizeCap>20GB</totalSizeCap>
+					<timeBasedFileNamingAndTriggeringPolicy
+							class="ch.qos.logback.core.rolling.SizeAndTimeBasedFNATP">
+						<maxFileSize>10MB</maxFileSize>
+					</timeBasedFileNamingAndTriggeringPolicy>
+				</rollingPolicy>
+			</appender>
+		</sift>
+	</appender>
 
-    <springProfile name="prod">
-        <appender name="FilteredConsole" class="ch.qos.logback.core.ConsoleAppender">
-            <filter class="ch.qos.logback.classic.filter.ThresholdFilter">
-                <level>INFO</level>
-            </filter>
-            <encoder>
-                <pattern>
-                    ${CONSOLE_LOG_PATTERN}
-                </pattern>
-                <charset>UTF-8</charset>
-            </encoder>
-        </appender>
+	<springProfile name="prod">
+		<appender name="FilteredConsole" class="ch.qos.logback.core.ConsoleAppender">
+			<filter class="ch.qos.logback.classic.filter.ThresholdFilter">
+				<level>INFO</level>
+			</filter>
+			<encoder>
+				<pattern>
+					${CONSOLE_LOG_PATTERN}
+				</pattern>
+				<charset>UTF-8</charset>
+			</encoder>
+		</appender>
 
-        <root level="info">
-            <appender-ref ref="DateSiftingAppender"/>
-            <appender-ref ref="FilteredConsole"/>
-        </root>
-        <logger name="com.commerce.electronic" level="trace" additivity="false">
-            <appender-ref ref="DateSiftingAppender"/>
-            <appender-ref ref="FilteredConsole"/>
-        </logger>
-    </springProfile>
+		<root level="info">
+			<appender-ref ref="DateSiftingAppender"/>
+			<appender-ref ref="FilteredConsole"/>
+		</root>
+		<logger name="com.commerce.electronic" level="trace" additivity="false">
+			<appender-ref ref="DateSiftingAppender"/>
+			<appender-ref ref="FilteredConsole"/>
+		</logger>
+	</springProfile>
 
-    <springProfile name="dev">
-        <root level="INFO">
-            <appender-ref ref="DateSiftingAppender"/>
-            <appender-ref ref="FilteredConsole"/>
-        </root>
-        <logger name="org.hibernate.type.descriptor.sql" level="TRACE" additivity="false">
-            <appender-ref ref="DateSiftingAppender"/>
-        </logger>
-    </springProfile>
+	<springProfile name="dev">
+		<root level="INFO">
+			<appender-ref ref="DateSiftingAppender"/>
+			<appender-ref ref="FilteredConsole"/>
+		</root>
+		<logger name="org.hibernate.type.descriptor.sql" level="TRACE" additivity="false">
+			<appender-ref ref="DateSiftingAppender"/>
+		</logger>
+	</springProfile>
 </configuration>

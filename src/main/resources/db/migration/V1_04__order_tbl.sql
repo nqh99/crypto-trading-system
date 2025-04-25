@@ -1,6 +1,6 @@
 CREATE TABLE "order"
 (
-    id         UUID PRIMARY KEY NOT NULL,
+    id         uuid PRIMARY KEY NOT NULL,
     user_id    VARCHAR(255)     NOT NULL,
     crypto_id  VARCHAR(255)     NOT NULL,
     price      DECIMAL(22, 7) DEFAULT 0,
