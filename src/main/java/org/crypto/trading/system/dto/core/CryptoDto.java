@@ -17,17 +17,13 @@ public class CryptoDto {
 
   private String symbol;
 
-  private BigDecimal price;
+  private BigDecimal open;
 
-  private BigDecimal amount;
+  private BigDecimal high;
 
-  private Float open;
+  private BigDecimal low;
 
-  private Float high;
-
-  private Float low;
-
-  private Float close;
+  private BigDecimal close;
 
   @JsonAlias({"bid", "bidPrice"})
   private BigDecimal bid;

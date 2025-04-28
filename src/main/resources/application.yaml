@@ -32,3 +32,8 @@ rest-client:
   connection-timeout-in-ms: 3000
   read-timeout-in-ms: 5000
   connection-request-timeout-in-ms: 2000
+
+server:
+  port: 8080
+  servlet:
+    context-path: /api/v1
