@@ -1,0 +1,39 @@
+spring:
+  application:
+    name: cts
+
+  datasource:
+    url: ${DB_URL:jdbc:h2:mem:db}
+    username: ${DB_ADMIN:dev}
+    password: ${DB_ADMIN_PASSWORD:123123}
+    driverClassName: ${DB_DRIVER:org.h2.Driver}
+
+  jpa:
+    database-platform: ${DB_PLATFORM:org.hibernate.dialect.H2Dialect}
+
+  h2:
+    console:
+      enabled: true
+      path: /h2
+
+logging:
+  config: classpath:xml/logback-spring.xml
+  file:
+    path: log
+    name: ${spring.application.name}
+
+exchange:
+  binance:
+    ticker-url: https://api.binance.com/api/v3/ticker/bookTicker
+  huobi:
+    ticker-url: https://api.huobi.pro/market/tickers
+
+rest-client:
+  connection-timeout-in-ms: 3000
+  read-timeout-in-ms: 5000
+  connection-request-timeout-in-ms: 2000
+
+server:
+  port: 8080
+  servlet:
+    context-path: /api/v1
