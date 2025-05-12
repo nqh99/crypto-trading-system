@@ -112,6 +112,8 @@ public class TradingService {
                 (wd) -> wd.getCrypto().getId().equals(UUID.fromString(tradeOrderDto.getCryptoId())))
             .findFirst();
 
+    validateOrder(tradeOrderDto);
+
     Order newOrder = TradeOrderDtoMapper.INSTANCE.toEntity(tradeOrderDto);
     newOrder.setUser(user);
     newOrder.setCrypto(crypto);
@@ -243,5 +245,18 @@ public class TradingService {
 
     order.setPrice(price);
     order.setFilledQty(filledQty.get());
+  }
+
+  private void validateOrder(TradeOrderDto tradeOrderDto) {
+    switch (OrderType.fromString(tradeOrderDto.getOrderType().trim())) {
+      case MARKET -> {
+        if (BigDecimal.ZERO.compareTo(tradeOrderDto.getPrice()) != 0) {
+          throw new BusinessException(
+              HttpStatus.BAD_REQUEST,
+              MessageFormat.format(
+                  "Price ({0}) should be 0 for market order!", tradeOrderDto.getPrice()));
+        }
+      }
+    }
   }
 }
