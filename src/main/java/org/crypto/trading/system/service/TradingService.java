@@ -143,6 +143,18 @@ public class TradingService {
     BigDecimal price = order.getPrice();
 
     switch (OrderType.fromString(order.getOrderType().trim())) {
+      case LIMIT -> {
+        price =
+            order.getPrice().compareTo(order.getCrypto().getAsk()) > 0
+                ? order.getCrypto().getAsk()
+                : order.getPrice();
+        filledQty.set(
+            order.getPrice().compareTo(order.getCrypto().getAsk()) >= 0
+                ? order.getQty().compareTo(order.getCrypto().getAskQty()) <= 0
+                    ? order.getQty()
+                    : order.getCrypto().getAskQty()
+                : BigDecimal.ZERO);
+      }
       case MARKET -> {
         price = order.getCrypto().getAsk();
         filledQty.set(
@@ -180,6 +192,18 @@ public class TradingService {
     BigDecimal price = order.getPrice();
 
     switch (OrderType.fromString(order.getOrderType().trim())) {
+      case LIMIT -> {
+        price =
+            order.getPrice().compareTo(order.getCrypto().getBid()) < 0
+                ? order.getCrypto().getBid()
+                : order.getPrice();
+        filledQty.set(
+            order.getPrice().compareTo(order.getCrypto().getBid()) <= 0
+                ? order.getQty().compareTo(order.getCrypto().getBidQty()) <= 0
+                    ? order.getQty()
+                    : order.getCrypto().getBidQty()
+                : BigDecimal.ZERO);
+      }
       case MARKET -> {
         price = order.getCrypto().getBid();
         filledQty.set(
