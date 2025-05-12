@@ -5,6 +5,7 @@ import java.text.MessageFormat;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.Optional;
 import java.util.stream.Collectors;
 import lombok.NonNull;
 import lombok.extern.slf4j.Slf4j;
@@ -15,6 +16,8 @@ import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.HttpStatusCode;
 import org.springframework.http.ResponseEntity;
+import org.springframework.validation.FieldError;
+import org.springframework.web.bind.MethodArgumentNotValidException;
 import org.springframework.web.bind.annotation.ControllerAdvice;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.context.request.ServletWebRequest;
@@ -25,6 +28,39 @@ import org.springframework.web.servlet.mvc.method.annotation.ResponseEntityExcep
 @ControllerAdvice
 @Slf4j
 public class GlobalExceptionHandler extends ResponseEntityExceptionHandler {
+
+  @Override
+  public ResponseEntity<Object> handleMethodArgumentNotValid(
+      MethodArgumentNotValidException exception,
+      @NonNull HttpHeaders headers,
+      @NonNull HttpStatusCode status,
+      @NonNull WebRequest request) {
+    Map<String, List<String>> errors =
+        exception.getBindingResult().getFieldErrors().stream()
+            .collect(
+                Collectors.groupingBy(
+                    FieldError::getField,
+                    Collectors.mapping(
+                        error ->
+                            Optional.ofNullable(error.getDefaultMessage())
+                                .orElse("error message wasn't defined"),
+                        Collectors.toList())));
+
+    ExceptionDto responseDto =
+        new ExceptionDto(
+            HttpStatus.BAD_REQUEST.getReasonPhrase(),
+            ((ServletWebRequest) request).getRequest().getServletPath(),
+            String.format(
+                "Request failed validation on these fields: %s",
+                String.join(", ", errors.keySet())),
+            errors);
+
+    logError(
+        MessageFormat.format("{0} [{1}]", responseDto.getMessage(), responseDto.getDetail()),
+        ((ServletWebRequest) request).getRequest());
+
+    return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(responseDto);
+  }
 
   @Override
   public ResponseEntity<Object> handleHandlerMethodValidationException(

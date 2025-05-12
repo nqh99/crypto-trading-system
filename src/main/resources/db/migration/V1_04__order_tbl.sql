@@ -1,10 +1,12 @@
 CREATE TABLE "order"
 (
-    id         uuid PRIMARY KEY NOT NULL,
+    id         UUID PRIMARY KEY NOT NULL,
     user_id    VARCHAR(255)     NOT NULL,
     crypto_id  VARCHAR(255)     NOT NULL,
+    order_type VARCHAR(30)      NOT NULL,
     price      DECIMAL(22, 7) DEFAULT 0,
-    amount     DECIMAL(22, 7) DEFAULT 0,
+    qty        DECIMAL(22, 7) DEFAULT 0,
+    filled_qty DECIMAL(22, 7) DEFAULT 0,
     bs         CHAR(1)          NOT NULL,
     status     VARCHAR(30)      NOT NULL,
     created_at TIMESTAMP,

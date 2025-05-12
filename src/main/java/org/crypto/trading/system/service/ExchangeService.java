@@ -2,7 +2,6 @@ package org.crypto.trading.system.service;
 
 import java.math.BigDecimal;
 import java.net.URI;
-import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.HashSet;
 import java.util.List;
@@ -145,7 +144,6 @@ public class ExchangeService {
       }
 
       if (needUpdate) {
-        crypto.setUpdatedAt(LocalDateTime.now());
         cryptoChangedSet.add(crypto);
       }
     }

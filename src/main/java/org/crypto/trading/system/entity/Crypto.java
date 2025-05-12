@@ -5,16 +5,15 @@ import jakarta.persistence.Entity;
 import jakarta.persistence.Id;
 import jakarta.persistence.Table;
 import java.math.BigDecimal;
-import java.time.LocalDateTime;
 import java.util.UUID;
 import lombok.*;
 
-@Data
-@NoArgsConstructor
-@EqualsAndHashCode(onlyExplicitlyIncluded = true)
 @Entity
 @Table(name = "crypto")
-public class Crypto {
+@Data
+@NoArgsConstructor
+@EqualsAndHashCode(onlyExplicitlyIncluded = true, callSuper = false)
+public class Crypto extends Auditable {
 
   @Id @NonNull @EqualsAndHashCode.Include private UUID id;
 
@@ -32,17 +31,11 @@ public class Crypto {
 
   @Column private BigDecimal bid;
 
-  @Column(name = "bid_qty", precision = 15, scale = 7)
+  @Column(precision = 15, scale = 7)
   private BigDecimal bidQty;
 
   @Column private BigDecimal ask;
 
-  @Column(name = "ask_qty", precision = 15, scale = 7)
+  @Column(precision = 15, scale = 7)
   private BigDecimal askQty;
-
-  @Column @NonNull @EqualsAndHashCode.Include private String status;
-
-  @Column @ToString.Exclude private LocalDateTime createdAt;
-
-  @Column @ToString.Exclude private LocalDateTime updatedAt;
 }

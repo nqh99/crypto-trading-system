@@ -6,7 +6,6 @@ CREATE TABLE "user"
     email      VARCHAR(255) UNIQUE NOT NULL,
     phone      VARCHAR(255) UNIQUE NOT NULL,
     address    VARCHAR(255),
-    balance    DECIMAL(22, 7) DEFAULT 0,
     status     VARCHAR(30)         NOT NULL,
     created_at TIMESTAMP,
     updated_at TIMESTAMP
