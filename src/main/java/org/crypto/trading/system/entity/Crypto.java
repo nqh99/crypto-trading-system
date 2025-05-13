@@ -19,8 +19,6 @@ public class Crypto extends Auditable {
 
   @NonNull @EqualsAndHashCode.Include private String symbol;
 
-  @Column private BigDecimal price;
-
   @Column private BigDecimal open;
 
   @Column private BigDecimal high;

@@ -9,6 +9,4 @@ import org.mapstruct.factory.Mappers;
 @Mapper
 public interface OrderHistoryMapper extends IMapper<Order, OrderHistory> {
   OrderHistoryMapper INSTANCE = Mappers.getMapper(OrderHistoryMapper.class);
-
-  OrderHistory toDto(Order order);
 }

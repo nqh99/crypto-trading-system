@@ -2,7 +2,6 @@ CREATE TABLE crypto
 (
     id         uuid PRIMARY KEY NOT NULL,
     symbol     VARCHAR(255)     NOT NULL,
-    price      DECIMAL(22, 7) DEFAULT 0,
     open       DECIMAL(22, 7) DEFAULT 0,
     high       DECIMAL(22, 7) DEFAULT 0,
     low        DECIMAL(22, 7) DEFAULT 0,
