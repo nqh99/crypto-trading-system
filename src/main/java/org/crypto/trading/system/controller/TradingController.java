@@ -23,7 +23,7 @@ public class TradingController {
 
   @GetMapping("aggregated-price")
   public ResponseEntity<List<CryptoDto>> retrieveLatestAggregatedPrice(
-      @RequestParam @NotEmpty String symbol) {
+      @RequestParam("symbol") @NotEmpty String symbol) {
     return ResponseEntity.ok(tradingService.retrieveLatestAggregatedPrice(symbol));
   }
 
